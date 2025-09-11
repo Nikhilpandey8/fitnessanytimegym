@@ -48,6 +48,15 @@ export default function Dashboard() {
     }
   }
 
+  // Helper to trigger backend status update
+  const notifyMemberships = async () => {
+    try {
+      await fetch('/api/memberships/notify', { method: 'POST' })
+    } catch (error) {
+      console.error('Error notifying memberships:', error)
+    }
+  }
+
   const handleAddMember = async (memberData: { full_name: string; phone?: string; email: string; notes?: string }) => {
     try {
       console.log('Adding member:', memberData)
@@ -119,6 +128,7 @@ export default function Dashboard() {
         body: JSON.stringify(data),
       })
       if (response.ok) {
+        await notifyMemberships()
         fetchMembers()
       }
     } catch (error) {
@@ -132,6 +142,7 @@ export default function Dashboard() {
         method: 'POST',
       })
       if (response.ok) {
+        await notifyMemberships()
         fetchMembers()
       }
     } catch (error) {
@@ -145,6 +156,7 @@ export default function Dashboard() {
         method: 'POST',
       })
       if (response.ok) {
+        await notifyMemberships()
         fetchMembers()
       }
     } catch (error) {
@@ -158,6 +170,7 @@ export default function Dashboard() {
         method: 'POST',
       })
       if (response.ok) {
+        await notifyMemberships()
         fetchMembers()
       }
     } catch (error) {
