@@ -20,6 +20,23 @@ interface MemberWithMemberships extends Member {
 }
 
 export default function Dashboard() {
+  const [expandedStat, setExpandedStat] = useState<string | null>(null)
+
+  // Helper to get members by status
+  const getMembersByStatus = (status: string) => {
+    switch (status) {
+      case 'active':
+        return members.filter(m => m.memberships.some(ms => ms.status === 'active'))
+      case 'hold':
+        return members.filter(m => m.memberships.some(ms => ms.status === 'hold'))
+      case 'expired':
+        return members.filter(m => m.memberships.some(ms => ms.status === 'expired'))
+      case 'total':
+        return members
+      default:
+        return []
+    }
+  }
   const [members, setMembers] = useState<MemberWithMemberships[]>([])
   const [loading, setLoading] = useState(true)
   const [showAddMember, setShowAddMember] = useState(false)
@@ -278,10 +295,12 @@ export default function Dashboard() {
         {/* Stats Cards */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+            {/* Total Members Card */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="bg-black/20 backdrop-blur-sm border border-purple-500/20 rounded-xl p-6"
+              className={`bg-black/20 backdrop-blur-sm border border-purple-500/20 rounded-xl p-6 cursor-pointer ${expandedStat === 'total' ? 'ring-2 ring-purple-400' : ''}`}
+              onClick={() => setExpandedStat(expandedStat === 'total' ? null : 'total')}
             >
               <div className="flex items-center justify-between">
                 <div>
@@ -292,11 +311,13 @@ export default function Dashboard() {
               </div>
             </motion.div>
 
+            {/* Active Members Card */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
-              className="bg-black/20 backdrop-blur-sm border border-green-500/20 rounded-xl p-6"
+              className={`bg-black/20 backdrop-blur-sm border border-green-500/20 rounded-xl p-6 cursor-pointer ${expandedStat === 'active' ? 'ring-2 ring-green-400' : ''}`}
+              onClick={() => setExpandedStat(expandedStat === 'active' ? null : 'active')}
             >
               <div className="flex items-center justify-between">
                 <div>
@@ -307,11 +328,13 @@ export default function Dashboard() {
               </div>
             </motion.div>
 
+            {/* On Hold Members Card */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
-              className="bg-black/20 backdrop-blur-sm border border-yellow-500/20 rounded-xl p-6"
+              className={`bg-black/20 backdrop-blur-sm border border-yellow-500/20 rounded-xl p-6 cursor-pointer ${expandedStat === 'hold' ? 'ring-2 ring-yellow-400' : ''}`}
+              onClick={() => setExpandedStat(expandedStat === 'hold' ? null : 'hold')}
             >
               <div className="flex items-center justify-between">
                 <div>
@@ -322,11 +345,13 @@ export default function Dashboard() {
               </div>
             </motion.div>
 
+            {/* Expired Members Card */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
-              className="bg-black/20 backdrop-blur-sm border border-red-500/20 rounded-xl p-6"
+              className={`bg-black/20 backdrop-blur-sm border border-red-500/20 rounded-xl p-6 cursor-pointer ${expandedStat === 'expired' ? 'ring-2 ring-red-400' : ''}`}
+              onClick={() => setExpandedStat(expandedStat === 'expired' ? null : 'expired')}
             >
               <div className="flex items-center justify-between">
                 <div>
@@ -337,6 +362,29 @@ export default function Dashboard() {
               </div>
             </motion.div>
           </div>
+
+          {/* Expanded Member List */}
+          {expandedStat && (
+            <div className="bg-black/30 rounded-xl p-6 mb-8">
+              <h3 className="text-lg font-bold mb-4 text-white">
+                {expandedStat === 'total' && 'All Members'}
+                {expandedStat === 'active' && 'Active Members'}
+                {expandedStat === 'hold' && 'On Hold Members'}
+                {expandedStat === 'expired' && 'Expired Members'}
+              </h3>
+              <ul className="space-y-2">
+                {getMembersByStatus(expandedStat).length === 0 ? (
+                  <li className="text-gray-400">No members found.</li>
+                ) : (
+                  getMembersByStatus(expandedStat).map((m) => (
+                    <li key={m.id} className="text-white font-medium bg-gray-800/40 rounded px-4 py-2">
+                      {m.full_name}
+                    </li>
+                  ))
+                )}
+              </ul>
+            </div>
+          )}
 
           {/* Search and Filter */}
           <div className="bg-black/20 backdrop-blur-sm border border-purple-500/20 rounded-xl p-6 mb-8">
