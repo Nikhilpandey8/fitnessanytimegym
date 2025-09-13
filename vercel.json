@@ -5,7 +5,7 @@
     }
   },
   "env": {
-    "ADMIN_USERNAME": "@admin-username",
+  "ADMIN_USERNAME": "fitnessanytime",
     "ADMIN_PASSWORD": "@admin-password"
   }
 }
