@@ -1,7 +1,7 @@
 {
   "functions": {
     "app/api/**/*.ts": {
-      "runtime": "@vercel/node"
+      "runtime": "@vercel/node@4"
     }
   },
   "env": {
