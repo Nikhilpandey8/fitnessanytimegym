@@ -1,9 +1,4 @@
 {
-  "functions": {
-    "api/**/*.ts": {
-      "runtime": "nodejs20.x"
-    }
-  },
   "env": {
   "ADMIN_USERNAME": "fitnessanytime",
   "ADMIN_PASSWORD": "Suraj@001"
