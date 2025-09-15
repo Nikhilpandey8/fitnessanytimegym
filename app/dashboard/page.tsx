@@ -22,7 +22,7 @@ interface MemberWithMemberships extends Member {
 export default function Dashboard() {
   const [expandedStat, setExpandedStat] = useState<string | null>(null)
 
-  // Helper to get members by status
+  // Helper to get members by status 
   const getMembersByStatus = (status: string) => {
     switch (status) {
       case 'active':
@@ -299,8 +299,8 @@ export default function Dashboard() {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className={`bg-black/20 backdrop-blur-sm border border-purple-500/20 rounded-xl p-6 cursor-pointer ${expandedStat === 'total' ? 'ring-2 ring-purple-400' : ''}`}
-              onClick={() => setExpandedStat(expandedStat === 'total' ? null : 'total')}
+              className={`bg-black/20 backdrop-blur-sm border border-purple-500/20 rounded-xl p-6 cursor-pointer`}
+              onClick={() => router.push('/dashboard/total')}
             >
               <div className="flex items-center justify-between">
                 <div>
@@ -316,8 +316,8 @@ export default function Dashboard() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
-              className={`bg-black/20 backdrop-blur-sm border border-green-500/20 rounded-xl p-6 cursor-pointer ${expandedStat === 'active' ? 'ring-2 ring-green-400' : ''}`}
-              onClick={() => setExpandedStat(expandedStat === 'active' ? null : 'active')}
+              className={`bg-black/20 backdrop-blur-sm border border-green-500/20 rounded-xl p-6 cursor-pointer`}
+              onClick={() => router.push('/dashboard/active')}
             >
               <div className="flex items-center justify-between">
                 <div>
@@ -333,8 +333,8 @@ export default function Dashboard() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
-              className={`bg-black/20 backdrop-blur-sm border border-yellow-500/20 rounded-xl p-6 cursor-pointer ${expandedStat === 'hold' ? 'ring-2 ring-yellow-400' : ''}`}
-              onClick={() => setExpandedStat(expandedStat === 'hold' ? null : 'hold')}
+              className={`bg-black/20 backdrop-blur-sm border border-yellow-500/20 rounded-xl p-6 cursor-pointer`}
+              onClick={() => router.push('/dashboard/hold')}
             >
               <div className="flex items-center justify-between">
                 <div>
@@ -350,8 +350,8 @@ export default function Dashboard() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
-              className={`bg-black/20 backdrop-blur-sm border border-red-500/20 rounded-xl p-6 cursor-pointer ${expandedStat === 'expired' ? 'ring-2 ring-red-400' : ''}`}
-              onClick={() => setExpandedStat(expandedStat === 'expired' ? null : 'expired')}
+              className={`bg-black/20 backdrop-blur-sm border border-red-500/20 rounded-xl p-6 cursor-pointer`}
+              onClick={() => router.push('/dashboard/expired')}
             >
               <div className="flex items-center justify-between">
                 <div>
