@@ -159,7 +159,8 @@ export default function FeeSlipPage({ params }: { params: { slipId: string } }) 
         {showQR && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60">
             <div className="bg-white rounded-lg shadow-lg p-8 flex flex-col items-center">
-              <h2 className="text-xl font-bold mb-4 text-gray-800">Scan to view Fee Slip</h2>
+              <h2 className="text-xl font-bold mb-2 text-gray-800">Scan this QR code</h2>
+              <p className="text-gray-600 mb-4 text-center text-sm">Scanning this QR code on any device will show the fee slip preview instantly.<br/>All other features (print, download, view) remain available here.</p>
               <QRCode value={`https://fitnessanytime.vercel.app/slip/${params.slipId}`} size={180} />
               <Button className="mt-6 bg-purple-600 text-white" onClick={() => setShowQR(false)}>
                 Close
