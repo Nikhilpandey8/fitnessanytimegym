@@ -2,8 +2,9 @@
 
 import { useState, useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
-import { Download, Printer, ArrowLeft } from 'lucide-react'
+import { Download, Printer, ArrowLeft, QrCode } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import QRCode from 'react-qr-code'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { formatCurrency, formatDate } from '@/lib/utils'
 import jsPDF from 'jspdf'
@@ -28,11 +29,13 @@ interface FeeSlipData {
 export default function FeeSlipPage({ params }: { params: { slipId: string } }) {
   const [slip, setSlip] = useState<FeeSlipData | null>(null)
   const [isLoading, setIsLoading] = useState(true)
+  const [showQR, setShowQR] = useState(false)
   const slipRef = useRef<HTMLDivElement>(null)
   const router = useRouter()
 
   useEffect(() => {
     fetchSlip()
+    // eslint-disable-next-line
   }, [])
 
   const fetchSlip = async () => {
@@ -126,7 +129,6 @@ export default function FeeSlipPage({ params }: { params: { slipId: string } }) 
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to Dashboard
           </Button>
-          
           <div className="flex space-x-3">
             <Button
               onClick={handlePrint}
@@ -143,8 +145,28 @@ export default function FeeSlipPage({ params }: { params: { slipId: string } }) 
               <Download className="w-4 h-4 mr-2" />
               Download PDF
             </Button>
+            <Button
+              onClick={() => setShowQR(true)}
+              className="bg-green-600 hover:bg-green-700 text-white"
+            >
+              <QrCode className="w-4 h-4 mr-2" />
+              QR
+            </Button>
           </div>
         </motion.div>
+
+        {/* QR Modal */}
+        {showQR && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60">
+            <div className="bg-white rounded-lg shadow-lg p-8 flex flex-col items-center">
+              <h2 className="text-xl font-bold mb-4 text-gray-800">Scan to view Fee Slip</h2>
+              <QRCode value={`https://fitnessanytime.vercel.app/slip/${params.slipId}`} size={180} />
+              <Button className="mt-6 bg-purple-600 text-white" onClick={() => setShowQR(false)}>
+                Close
+              </Button>
+            </div>
+          </div>
+        )}
 
         {/* Fee Slip */}
         <motion.div
@@ -169,7 +191,6 @@ export default function FeeSlipPage({ params }: { params: { slipId: string } }) 
                 <p className="text-sm">Contact: 9811008460</p>
               </div>
             </CardHeader>
-            
             <CardContent className="p-8">
               <div className="space-y-6">
                 {/* Receipt Header */}
@@ -184,7 +205,6 @@ export default function FeeSlipPage({ params }: { params: { slipId: string } }) 
                     </p>
                   </div>
                 </div>
-
                 {/* Member Information */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
@@ -198,7 +218,6 @@ export default function FeeSlipPage({ params }: { params: { slipId: string } }) 
                       )}
                     </div>
                   </div>
-                  
                   <div>
                     <h3 className="text-sm font-medium text-gray-400 print:text-gray-600 mb-2">
                       MEMBERSHIP DETAILS
@@ -210,7 +229,6 @@ export default function FeeSlipPage({ params }: { params: { slipId: string } }) 
                     </div>
                   </div>
                 </div>
-
                 {/* Payment Information */}
                 <div className="border-t border-gray-600/30 print:border-gray-300 pt-6">
                   <div className="bg-gray-800/30 print:bg-gray-50 rounded-lg p-4 print:border print:border-gray-300">
@@ -222,7 +240,6 @@ export default function FeeSlipPage({ params }: { params: { slipId: string } }) 
                     </div>
                   </div>
                 </div>
-
                 {/* Signature */}
                 <div className="border-t border-gray-600/30 print:border-gray-300 pt-6 text-center">
                   <p className="text-gray-400 print:text-gray-600 mb-6">Authorized Signature</p>
